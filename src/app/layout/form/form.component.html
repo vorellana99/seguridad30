@@ -16,7 +16,8 @@
                     </div>
                 </div>  
                 <div class="col-md-12 mb-3">
-                    <p-table [value]="sistemas" selectionMode="single" [(selection)]="selectedSistema" (onRowSelect)="onRowSelect($event)">
+                    <!-- [loadingIcon]="" TENEMOS QUE ESTABLECER UNA CLASE PERSONALIZADA QUE EXISTA (LA CREAMOS) DE LO CONTRARIO NO MOSTRARA NADA-->
+                    <p-table [value]="sistemas" selectionMode="single" [(selection)]="selectedSistema" (onRowSelect)="onRowSelect($event)" [loading]="loading" [loadingIcon]="">
                         <ng-template pTemplate="header">
                             <tr>
                                 <th>Codigo</th>

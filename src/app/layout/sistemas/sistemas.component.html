@@ -1,0 +1,78 @@
+<div [@routerTransition]>
+    <!-- <app-page-header [heading]="'Forms2'" [icon]="'fa-edit'"></app-page-header> -->
+    <app-page-header [heading]="'Sistemas'" [icon]="'fa-edit'"></app-page-header>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Buscar" [(ngModel)]="inpBuscar" [ngModelOptions]="{standalone: true}" (keyup.enter)="loadGridSistemas()" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" (click)="loadGridSistemas()">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>  
+            <div class="col-md-12 mb-3">
+                <!-- [loadingIcon]="" TENEMOS QUE ESTABLECER UNA CLASE PERSONALIZADA QUE EXISTA (LA CREAMOS) DE LO CONTRARIO NO MOSTRARA NADA-->
+                <p-table [value]="sistemas" selectionMode="single" [(selection)]="selectedSistema" (onRowSelect)="onRowSelect($event)" [loading]="loading" [loadingIcon]="">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Codigo</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-sistema>
+                        <tr [pSelectableRow]="sistema">
+                            <td>{{sistema.id}}</td>
+                            <td>{{sistema.name}}</td>
+                            <td>{{sistema.description}}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="summary" let-rowData>
+                        <div style="text-align:left">
+                            <button type="button" pButton icon="pi pi-plus" (click)="showDialogToAdd()" label="Agregar"></button>
+                        </div>
+                    </ng-template>
+                </p-table>
+
+                <p-dialog header="Sistema" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [closable]="true" [width]="350">
+                    <div class="ui-g ui-fluid" *ngIf="sistema">
+                        <div class="col-md-12 mb-3">
+                            <label for="firstName">Código</label>
+                            <input type="text" class="form-control" [(ngModel)]="sistema.id" disabled="{{!newSistema}}">
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label>Nombre</label>
+                            <input type="text" class="form-control" [(ngModel)]="sistema.name">
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="firstName">Descripción</label>
+                            <textarea class="form-control" rows="2" [(ngModel)]="sistema.description"></textarea>
+                        </div>
+                    </div>
+
+                        <p-footer>
+                            <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                                <button type="button" pButton icon="pi pi-times" (click)="delete()" label="Eliminar" class="ui-button-danger"></button>
+                                <button type="button" pButton icon="pi pi-check" (click)="save()" label="Guardar" class="ui-button-success"></button>
+                            </div>
+                        </p-footer>
+                    </p-dialog>
+            </div>                        
+        </div>
+        <!-- <div class="row">
+            <div class="col">
+                <button class="btn btn-primary float-right"><i class="fa fa-save"></i> Grabar</button>
+            </div>
+        </div> -->
+    </div>
+</div>
+<!-- /.row -->
+</div>
+
+
+
