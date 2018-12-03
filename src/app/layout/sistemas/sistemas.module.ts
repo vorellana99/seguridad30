@@ -21,7 +21,6 @@ import { InputTextModule } from 'primeng/inputtext';
     InputTextModule,
     ButtonModule,
     DialogModule
-    
   ],
   declarations: [SistemasComponent],
   bootstrap: [SistemasComponent]

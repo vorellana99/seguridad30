@@ -16,7 +16,7 @@ export class SistemaService {
     
     constructor(private http: HttpClient) {}
 
-    getSistemas (id:string, busqueda:string): Observable<Sistema[]> {
+    get (id:string, busqueda:string): Observable<Sistema[]> {
         return this.http.get<Sistema[]>(this.url + '?id=' + id + '&busqueda='+ busqueda)
             .pipe(
             tap(_ => console.log('OK.Service.Read.')),
@@ -24,13 +24,13 @@ export class SistemaService {
             );
     };
 
-    addSistema(sistema:Sistema): Observable<Sistema>{ // Observable<Sistema> es el tipo de lo que devuelve a travez de la API. que puede ser TRUE o FALSE, o un model en JSON
+    add(sistema:Sistema): Observable<Sistema>{ // Observable<Sistema> es el tipo de lo que devuelve a travez de la API. que puede ser TRUE o FALSE, o un model en JSON
         return this.http.post<Sistema>(this.url, sistema, httpOptions).pipe(
             tap((sistema:Sistema) => console.log('Ok.Service.Insert.')), // Respuesta de la API, puede ser un Json
             catchError(this.handleError('Error.Service.Insert.')));
     }
 
-    updateSistema(sistema:Sistema):Observable<Sistema>{ // Observable<Sistema> es el tipo de lo que devuelve a travez de la API. que puede ser TRUE o FALSE, o un model en JSON
+    update(sistema:Sistema):Observable<Sistema>{ // Observable<Sistema> es el tipo de lo que devuelve a travez de la API. que puede ser TRUE o FALSE, o un model en JSON
         return this.http.put<Sistema>(this.url + '/' + sistema.id, sistema, httpOptions).pipe(
             tap((sistema:Sistema) => console.log('Ok.Service.Update.')),// Respuesta de la API, puede ser un Json
             catchError(this.handleError('Error.Service.Update.')));
@@ -48,5 +48,4 @@ export class SistemaService {
 /* Anotaciones  
 - Se tratan de dejar las respuesta de los errores de la manera mas genérica para que no arrojen errores y estar abiertas a 
     cambios de las respuestas de APIS y no generen inconsistencias
-
 */

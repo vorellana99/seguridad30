@@ -4,10 +4,9 @@
             <i class="fa fa-fw fa-dashboard"></i>&nbsp;
             <span>{{ 'Dashboard' | translate }}</span>
         </a>
-        <a [routerLink]="['/charts']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+        <!-- <a [routerLink]="['/charts']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp;
-            <!-- <span>{{ 'Charts' | translate }}</span> -->
-            <span>Usuarios</span>
+            <span>{{ 'Charts' | translate }}</span>
         </a>
         <a [routerLink]="['/tables']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-table"></i>&nbsp;
@@ -28,44 +27,48 @@
         <a [routerLink]="['/components']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-th-list"></i>&nbsp;
             <span>Acciones de permisos</span>
-        </a>
+        </a> -->
 
         <!-- nuevas -->
-        <a [routerLink]="['/sistemas']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+        <!-- <a [routerLink]="['/sistemas']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-th-list"></i>&nbsp;
             <span>Sistemas 2</span>
-        </a>
+        </a> -->
         <a [routerLink]="['/usuarios']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-            <i class="fa fa-th-list"></i>&nbsp;
+            <i class="fa fa-user"></i>&nbsp;
             <span>Usuarios</span>
         </a>
         <a [routerLink]="['/perfiles']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-            <i class="fa fa-th-list"></i>&nbsp;
+            <i class="fa fa-users"></i>&nbsp;
             <span>Perfiles</span>
         </a>
         <a [routerLink]="['/sistemas']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-            <i class="fa fa-th-list"></i>&nbsp;
+            <i class="fa fa-gears"></i>&nbsp;
             <span>Sistemas</span>
         </a>
         <a [routerLink]="['/recursos']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-            <i class="fa fa-th-list"></i>&nbsp;
+            <i class="fa fa-television"></i>&nbsp;
             <span>Recursos</span>
         </a>
         <a [routerLink]="['/tipos-recurso']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-            <i class="fa fa-th-list"></i>&nbsp;
+            <i class="fa fa-object-ungroup"></i>&nbsp;
             <span>Tipos de recurso</span>
         </a>
         <a [routerLink]="['/acciones-permiso']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-            <i class="fa fa-th-list"></i>&nbsp;
+            <i class="fa fa-pencil"></i>&nbsp;
             <span>Acciones de permiso</span>
         </a>
 
 
         <div class="header-fields">
-            <a (click)="rltAndLtr()" class="list-group-item">
+
+
+            <!-- <a (click)="rltAndLtr()" class="list-group-item">
                 <span><i class="fa fa-arrows-h"></i>&nbsp; RTL/LTR</span>
-            </a>
-            <div class="nested-menu">
+            </a> -->
+
+            <!-- Idioma -->
+            <!-- <div class="nested-menu">
                 <a class="list-group-item" (click)="addExpandClass('languages')">
                     <span><i class="fa fa-language"></i>&nbsp; {{ 'Language' | translate }} <b class="caret"></b></span>
                 </a>
@@ -108,7 +111,9 @@
                         </li>
                     </ul>
                 </li>
-            </div>
+            </div> -->
+
+
             <div class="nested-menu">
                 <a class="list-group-item" (click)="addExpandClass('profile')">
                     <span><i class="fa fa-user"></i>&nbsp; John Smith</span>

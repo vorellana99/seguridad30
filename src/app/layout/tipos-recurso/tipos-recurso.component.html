@@ -1,3 +1,68 @@
-<p>
-  tipos-recurso works!
-</p>
+<div [@routerTransition]>
+  <app-page-header [heading]="'Tipos de recurso'" [icon]="'fa-edit'"></app-page-header>
+
+  <div class="row">
+      <div class="col-lg-12">
+          <div class="row">
+              <div class="col-md-4 mb-1">
+                  <div class="input-group mb-3">
+                      <input type="text" class="form-control" placeholder="Buscar" [(ngModel)]="inpBuscar" [ngModelOptions]="{standalone: true}" (keyup.enter)="loadGrid()" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                      <div class="input-group-append">
+                          <button class="btn btn-outline-secondary" type="button" (click)="loadGrid()">
+                              <i class="fa fa-search"></i>
+                          </button>
+                      </div>
+                  </div>
+              </div>  
+              <div class="col-md-12 mb-3">
+                  <p-table [value]="items" selectionMode="single" (onRowSelect)="onRowSelect($event)" [loading]="loading" [loadingIcon]="">
+                      <ng-template pTemplate="header">
+                          <tr>
+                              <th>Codigo</th>
+                              <th>Nombre</th>
+                              <th>Descripción</th>
+                          </tr>
+                      </ng-template>
+                      <ng-template pTemplate="body" let-itemx>
+                          <tr [pSelectableRow]="itemx">
+                              <td>{{itemx.id}}</td>
+                              <td>{{itemx.name}}</td>
+                              <td>{{itemx.description}}</td>
+                          </tr>
+                      </ng-template>
+                      <ng-template pTemplate="summary" let-rowData>
+                          <div style="text-align:left">
+                              <button type="button" pButton icon="pi pi-plus" (click)="showDialogToAdd()" label="Agregar"></button>
+                          </div>
+                      </ng-template>
+                  </p-table>
+
+                  <p-dialog header="Tipo de recurso" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [closable]="true" [width]="350">
+                      <div class="ui-g ui-fluid" *ngIf="item">
+                          <div class="col-md-12 mb-3">
+                              <label for="firstName">Código</label>
+                              <input type="text" class="form-control" [(ngModel)]="item.id" disabled="{{!newItem}}">
+                          </div>
+                          <div class="col-md-12 mb-3">
+                              <label>Nombre</label>
+                              <input type="text" class="form-control" [(ngModel)]="item.name">
+                          </div>
+                          <div class="col-md-12 mb-3">
+                              <label for="firstName">Descripción</label>
+                              <textarea class="form-control" rows="2" [(ngModel)]="item.description"></textarea>
+                          </div>
+                      </div>
+
+                      <p-footer>
+                          <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                              <button type="button" pButton icon="pi pi-times" (click)="delete()" label="Eliminar" class="ui-button-danger"></button>
+                              <button type="button" pButton icon="pi pi-check" (click)="save()" label="Guardar" class="ui-button-success"></button>
+                          </div>
+                      </p-footer>
+                  </p-dialog>
+              </div>                        
+          </div>
+      </div>
+  </div>
+<!-- /.row -->
+</div>

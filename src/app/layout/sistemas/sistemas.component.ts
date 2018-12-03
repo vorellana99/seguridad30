@@ -3,7 +3,7 @@ import { routerTransition } from '../../router.animations';
 import { Sistema } from '../../shared/models/sistema';
 import { SistemaService } from '../../shared/services/sistema.service';
 
-export class PrimeSistema implements Sistema{
+export class PrimeClass implements Sistema{
     constructor(public id?, public name?, public description?){}
 }
 @Component({
@@ -11,79 +11,77 @@ export class PrimeSistema implements Sistema{
     templateUrl: './sistemas.component.html',
     styleUrls: ['./sistemas.component.scss'],
     animations: [routerTransition()],
-      providers:[SistemaService]
+    providers:[SistemaService]
 })
 export class SistemasComponent implements OnInit {
     inpBuscar:string = "";
-    newSistema: boolean;
-    sistema:Sistema = new PrimeSistema();
-    sistemas: Sistema[];
+    newItem: boolean;
+    item:Sistema = new PrimeClass();
+    items: Sistema[];
     displayDialog: boolean;
     loading: boolean;
-    constructor(private sistemaService:SistemaService) {}
+    constructor(private service:SistemaService) {}
   
     ngOnInit() {
-        this.loadGridSistemas();    
+        this.loadGrid();    
     }
 
-    loadGridSistemas(){
+    loadGrid(){
         this.loading = true;
-        this.getSistemas('',this.inpBuscar);
+        this.get('',this.inpBuscar);
     }
 
     showDialogToAdd() {
-        this.newSistema = true;
-        this.sistema = new PrimeSistema();
+        this.newItem = true;
+        this.item = new PrimeClass();
         this.displayDialog = true;
     }
 
     onRowSelect(event) {
-        this.newSistema = false;
-        this.sistema = {...event.data};
+        this.newItem = false;
+        this.item = {...event.data};
         this.displayDialog = true;
     }
 
     save() {
-        if (this.newSistema) 
-            this.addSistema(this.sistema);
+        if (this.newItem) 
+            this.add(this.item);
         else
-            this.updateSistema(this.sistema);
+            this.update(this.item);
     }
 
-
-    getSistemas(id:string,busqueda:string){
-        this.sistemaService.getSistemas(id,this.inpBuscar)
+    get(id:string,busqueda:string){
+        this.service.get(id,this.inpBuscar)
         .subscribe(
-            sistemas => {
-                this.sistemas = sistemas;
+            items => {
+                this.items = items;
                 console.log('Ok.Component.Read.');
-                // console.log(this.sistemas);
                 this.loading = false;
             },(error=>{
                 console.log('Error.Component.Read.')
             }));
     }
     
-    addSistema(sistema:Sistema){
-        this.sistemaService.addSistema(sistema)
+    add(item:Sistema){
+        this.service.add(item)
         .subscribe(
-            sistema => {
-                this.loadGridSistemas(); // recarga la grilla
-                console.log('Ok.Component.Insert.') // sistema.name
-                this.sistema = null;
+            item => {
+                this.loadGrid(); // recarga la grilla
+                console.log('Ok.Component.Insert.')
+                this.item = null;
                 this.displayDialog = false;
             },(error=>{
                 console.log('Error.Component.Insert.')
             }));
     }
 
-    updateSistema(sistema:Sistema){
-        this.sistemaService.updateSistema(sistema)
+    update(item:Sistema){
+        this.service.update(item)
         .subscribe(
-            sistema => {
-                this.loadGridSistemas(); // recarga la grilla
-                console.log('Ok.Component.Update')  // sistema.name
-                this.sistema = null;
+            item => {
+                this.loadGrid(); // recarga la grilla
+                console.log('Ok.Component.Update')
+                this.item = null;
                 this.displayDialog = false;
             },(error=>{
                 console.log('Error.Component.Update.')
