@@ -88,4 +88,7 @@ export class TiposRecursoComponent implements OnInit {
               console.log('Error.Component.Update.')
           }));
   }
+
+  delete(){}
+  
 }

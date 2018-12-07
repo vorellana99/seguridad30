@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { Usuario } from '../../shared/models/usuario';
 import { UsuarioService } from '../../shared/services/usuario.service';
+import { ConfirmationService } from 'primeng/api';
 
 export class PrimeClass implements Usuario{
   constructor(public codigo?, public name?, public description?){}
@@ -11,7 +12,7 @@ export class PrimeClass implements Usuario{
   templateUrl: './usuarios.component.html',
   styleUrls: ['./usuarios.component.scss'],
   animations: [routerTransition()],
-  providers:[UsuarioService]
+  providers:[UsuarioService,ConfirmationService]
 })
 export class UsuariosComponent implements OnInit {
 
@@ -21,10 +22,25 @@ export class UsuariosComponent implements OnInit {
   items: Usuario[];
   displayDialog: boolean;
   loading: boolean;
-  constructor(private service: UsuarioService) {}
+
+  //constructor(private service: UsuarioService) {}
+  constructor(private service: UsuarioService, private confirmationService: ConfirmationService) {}
 
   ngOnInit() {
-      this.loadGrid();    
+      this.loadGrid();
+  }
+
+  closeDialogHandler(mival: boolean){
+    this.displayDialog = mival;
+    this.loadGrid();
+  }
+
+  confirm() {
+    this.confirmationService.confirm({
+    message: 'Are you sure that you want to perform this action?',
+    accept: () => {
+        //Actual logic to perform a confirmation
+    }});
   }
 
   loadGrid(){
@@ -39,10 +55,17 @@ export class UsuariosComponent implements OnInit {
   }
 
   onRowSelect(event) {
-      this.newItem = false;
-      this.item = {...event.data};
-      this.displayDialog = true;
+    //   this.newItem = false;
+    //   this.item = {...event.data};
+    //   this.displayDialog = true;
   }
+
+//   save() {
+//       if (this.newItem) 
+//           this.add(this.item);
+//       else
+//           this.update(this.item);
+//   }
 
   save() {
       if (this.newItem) 
@@ -52,7 +75,7 @@ export class UsuariosComponent implements OnInit {
   }
 
   get(id:string,busqueda:string){
-      this.service.get(id,this.inpBuscar)
+      this.service.get(id,busqueda)
       .subscribe(
           items => {
               this.items = items;
@@ -88,4 +111,7 @@ export class UsuariosComponent implements OnInit {
               console.log('Error.Component.Update.')
           }));
   }
+
+  delete(){}
+
 }

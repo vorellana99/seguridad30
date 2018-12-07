@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { Recurso } from '../../shared/models/recurso';
 import { RecursoService } from '../../shared/services/recurso.service';
-
+import { TipoRecursoService } from '../../shared/services/tipo-recurso.service';
+import { TipoRecurso } from 'src/app/shared/models/tipo-recurso';
 export class PrimeClass implements Recurso{
   constructor(public id?, public name?, public description?){}
 }
@@ -11,7 +12,7 @@ export class PrimeClass implements Recurso{
   templateUrl: './recursos.component.html',
   styleUrls: ['./recursos.component.scss'],
   animations: [routerTransition()],
-  providers:[RecursoService]
+  providers:[RecursoService, TipoRecursoService]
 })
 export class RecursosComponent implements OnInit {
   inpBuscar:string = "";
@@ -20,10 +21,13 @@ export class RecursosComponent implements OnInit {
   items: Recurso[];
   displayDialog: boolean;
   loading: boolean;
-  constructor(private service:RecursoService) {}
+  tiposRecurso: TipoRecurso[];
+
+  constructor(private service:RecursoService, private tipoRecursoService: TipoRecursoService) {}
 
   ngOnInit() {
       this.loadGrid();    
+      this.getTiposRecurso();
   }
 
   loadGrid(){
@@ -87,4 +91,19 @@ export class RecursosComponent implements OnInit {
               console.log('Error.Component.Update.')
           }));
   }
+
+  delete(){}
+  
+  getTiposRecurso(){
+    this.tipoRecursoService.get('','')
+    .subscribe(
+        items => {
+            this.tiposRecurso = items;
+            console.log('Ok.Component.Read.');
+            
+        },(error=>{
+            console.log('Error.Component.Read.')
+        }));
+  }
+
 }

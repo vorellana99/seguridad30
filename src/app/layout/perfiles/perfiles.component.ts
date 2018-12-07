@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { Perfil } from '../../shared/models/perfil';
 import { PerfilService } from '../../shared/services/perfil.service';
+import { PermisosComponent } from '../permisos/permisos.component';
 
 export class PrimeClass implements Perfil{
     constructor(public id?, public name?, public description?){}
@@ -19,12 +20,28 @@ export class PerfilesComponent implements OnInit {
     item: Perfil = new PrimeClass();
     items: Perfil[];
     displayDialog: boolean;
+    displayDialogPerfil: boolean;
     loading: boolean;
+    @ViewChild(PermisosComponent) private permisosComponent: PermisosComponent;
+    headerDialog: string = "";
 
     constructor(private service: PerfilService) {}
   
+    ngAfterViewInit(){
+        // this.permisosComponent.loadGrid();
+        // this.permisosComponent.loading = true;
+    }
+
     ngOnInit() {
         this.loadGrid();    
+    }
+
+    selectPerfilWithButton(selectedItem:Perfil){
+        console.log(selectedItem);
+        this.permisosComponent.roleId = selectedItem.id;
+        this.permisosComponent.loadGrid('');
+        this.headerDialog = "Permisos del perfil: " + selectedItem.name;
+        this.displayDialogPerfil = true;
     }
 
     loadGrid(){
@@ -39,8 +56,8 @@ export class PerfilesComponent implements OnInit {
     }
 
     onRowSelect(event) {
-        this.newItem = false;
-        this.item = {...event.data};
+        // this.newItem = false;
+        // this.item = {...event.data};
         this.displayDialog = true;
     }
 
@@ -88,4 +105,6 @@ export class PerfilesComponent implements OnInit {
                 console.log('Error.Component.Update.')
             }));
     }
+
+    delete(){}
 }

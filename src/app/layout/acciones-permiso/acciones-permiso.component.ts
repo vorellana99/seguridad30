@@ -88,4 +88,7 @@ export class AccionesPermisoComponent implements OnInit {
               console.log('Error.Component.Update.')
           }));
   }
+
+  delete(){}
+  
 }

@@ -28,13 +28,13 @@ export class ChartsComponent implements OnInit {
     }
 
     getTrabajadores(){
-        this.trabajadorService.getTrabajador(this.inpBuscar)
-        .subscribe(trabajadores => {
-            this.trabajadores = trabajadores;
-            console.log('Test Get Trabajadores ps');
-            console.log(this.trabajadores);
-            //console.log(this.trabajadores[0].nombre);
-        })
+        // this.trabajadorService.getTrabajador(this.inpBuscar)
+        // .subscribe(trabajadores => {
+        //     this.trabajadores = trabajadores;
+        //     console.log('Test Get Trabajadores ps');
+        //     console.log(this.trabajadores);
+        //     //console.log(this.trabajadores[0].nombre);
+        // })
     }
 
 }

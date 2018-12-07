@@ -10,10 +10,9 @@ const httpOptions = {
 
 @Injectable()
 export class SistemaService {
-    // url: string = 'https://localhost:44308/api/SystemApps';
-    url: string = 'https://api.crl.pe/seguridad/api/SystemApps';
-    // url: string = 'https://crossorigin.me/https://api.crl.pe/seguridad/api/SystemApps';
     
+    url: string = 'https://api.crl.pe/seguridad/api/SystemApps';
+        
     constructor(private http: HttpClient) {}
 
     get (id:string, busqueda:string): Observable<Sistema[]> {
@@ -24,15 +23,15 @@ export class SistemaService {
             );
     };
 
-    add(sistema:Sistema): Observable<Sistema>{ // Observable<Sistema> es el tipo de lo que devuelve a travez de la API. que puede ser TRUE o FALSE, o un model en JSON
-        return this.http.post<Sistema>(this.url, sistema, httpOptions).pipe(
-            tap((sistema:Sistema) => console.log('Ok.Service.Insert.')), // Respuesta de la API, puede ser un Json
+    add(item:Sistema): Observable<Sistema>{ // Observable<Sistema> es el tipo de lo que devuelve a travez de la API. que puede ser TRUE o FALSE, o un model en JSON
+        return this.http.post<Sistema>(this.url, item, httpOptions).pipe(
+            tap((item:Sistema) => console.log('Ok.Service.Insert.')), // Respuesta de la API, puede ser un Json
             catchError(this.handleError('Error.Service.Insert.')));
     }
 
-    update(sistema:Sistema):Observable<Sistema>{ // Observable<Sistema> es el tipo de lo que devuelve a travez de la API. que puede ser TRUE o FALSE, o un model en JSON
-        return this.http.put<Sistema>(this.url + '/' + sistema.id, sistema, httpOptions).pipe(
-            tap((sistema:Sistema) => console.log('Ok.Service.Update.')),// Respuesta de la API, puede ser un Json
+    update(item:Sistema):Observable<Sistema>{ // Observable<Sistema> es el tipo de lo que devuelve a travez de la API. que puede ser TRUE o FALSE, o un model en JSON
+        return this.http.put<Sistema>(this.url + '/' + item.id, item, httpOptions).pipe(
+            tap((item:Sistema) => console.log('Ok.Service.Update.')),// Respuesta de la API, puede ser un Json
             catchError(this.handleError('Error.Service.Update.')));
     }
 

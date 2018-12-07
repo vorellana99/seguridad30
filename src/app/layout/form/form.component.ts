@@ -28,5 +28,14 @@ export class FormComponent implements OnInit {
            
     }
 
-   
+    selectedSistema(){}
+
+    loadGridSistemas(){}
+
+    onRowSelect(){}
+
+    save(){}
+
+    delete(){}
 }
+

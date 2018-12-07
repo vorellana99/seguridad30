@@ -13,7 +13,7 @@ import {LoginService} from '../shared/services/login.service';
     animations: [routerTransition()]
 })
 export class LoginComponent implements OnInit {
-    closeResult: string;
+    // closeResult: string;
     user: string = "";
     password:string = "";
     roles:Rol[];
@@ -41,10 +41,15 @@ export class LoginComponent implements OnInit {
             const modalRef = this.modalService.open(this.content);
         }else{
 
-            //this.getInfo();
+            if(this.user == 'admin' && this.password == '123456'){
+                localStorage.setItem('isLoggedin', 'true');
+                localStorage.setItem('userName', this.user);
+                this.router.navigate(['/dashboard']);
+            }else{
+                const modalRef = this.modalService.open(this.content);
+            }
 
-            localStorage.setItem('isLoggedin', 'true');
-            this.router.navigate(['/dashboard']);            
+            //this.getInfo();
         }
     }
     // onLoggedin() {

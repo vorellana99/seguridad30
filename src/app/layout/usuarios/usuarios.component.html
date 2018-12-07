@@ -1,3 +1,5 @@
+<p-confirmDialog header="Confirmation1" icon="pi pi-exclamation-triangle" width="425"></p-confirmDialog>
+
 <div [@routerTransition]>
   <app-page-header [heading]="'Usuarios'" [icon]="'fa-edit'"></app-page-header>
 
@@ -13,25 +15,26 @@
                           </button>
                       </div>
                   </div>
+                  <!-- <button type="button" pButton icon="pi pi-plus" (click)="confirm()" label="Confirm ps"></button> -->
               </div>  
               <div class="col-md-12 mb-3">
-                  <p-table [value]="items" selectionMode="single" (onRowSelect)="onRowSelect($event)" [loading]="loading" [loadingIcon]="">
+                  <p-table [value]="items" selectionMode="single" (onRowSelect)="onRowSelect($event)" [loading]="loading" [loadingIcon]="" [scrollable]="true">
                       <ng-template pTemplate="header">
                           <tr>
-                              <th>Nro.Documento</th>
-                              <th>Código </th>
-                              <th>Nombre</th>
-                              <th>Ap.Paterno</th>
-                              <th>Ap.Materno</th>
+                              <th style="width: 200px">Nº Documento</th>
+                              <th style="width: 200px">Código </th>
+                              <th style="width: 200px">Nombre</th>
+                              <th style="width: 200px">Ap.Paterno</th>
+                              <th style="width: 200px">Ap.Materno</th>
                           </tr>
                       </ng-template>
                       <ng-template pTemplate="body" let-itemx>
                           <tr [pSelectableRow]="itemx">
-                              <td>{{itemx.codigo}}</td>
-                              <td>{{itemx.codigoCorp}}</td>
-                              <td>{{itemx.nombre}}</td>
-                              <td>{{itemx.apePaterno}}</td>
-                              <td>{{itemx.apeMaterno}}</td>
+                              <td style="width: 200px">{{itemx.codigo}}</td>
+                              <td style="width: 200px">{{itemx.codigoCorp}}</td>
+                              <td style="width: 200px">{{itemx.nombre}}</td>
+                              <td style="width: 200px">{{itemx.apePaterno}}</td>
+                              <td style="width: 200px">{{itemx.apeMaterno}}</td>
                           </tr>
                       </ng-template>
                       <ng-template pTemplate="summary" let-rowData>
@@ -41,29 +44,9 @@
                       </ng-template>
                   </p-table>
 
-                  <p-dialog header="Usuario" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [closable]="true" [width]="350">
-                      <div class="ui-g ui-fluid" *ngIf="item">
-                          <div class="col-md-12 mb-3">
-                              <label for="firstName">Código</label>
-                              <input type="text" class="form-control" [(ngModel)]="item.id" disabled="{{!newItem}}">
-                          </div>
-                          <div class="col-md-12 mb-3">
-                              <label>Nombre</label>
-                              <input type="text" class="form-control" [(ngModel)]="item.name">
-                          </div>
-                          <div class="col-md-12 mb-3">
-                              <label for="firstName">Descripción</label>
-                              <textarea class="form-control" rows="2" [(ngModel)]="item.description"></textarea>
-                          </div>
-                      </div>
-
-                      <p-footer>
-                          <div class="ui-dialog-buttonpane ui-helper-clearfix">
-                              <button type="button" pButton icon="pi pi-times" (click)="delete()" label="Eliminar" class="ui-button-danger"></button>
-                              <button type="button" pButton icon="pi pi-check" (click)="save()" label="Guardar" class="ui-button-success"></button>
-                          </div>
-                      </p-footer>
-                  </p-dialog>
+                   <p-dialog header="Trabajador" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [closable]="true" [width]="800">
+                        <app-trabajador (eventCloseDialog)="closeDialogHandler($event)"></app-trabajador>
+                   </p-dialog>
               </div>                        
           </div>
       </div>

@@ -48,6 +48,16 @@
                               <input type="text" class="form-control" [(ngModel)]="item.name">
                           </div>
                           <div class="col-md-12 mb-3">
+                                <label>Tipo</label>
+                                <select class="form-control" [(ngModel)]="item.typeResourceId">
+                                    <option [value]="tiporecurso.id" *ngFor="let tiporecurso of tiposRecurso">{{tiporecurso.name}}</option>
+                                </select>
+                          </div>
+                          <div class="col-md-12 mb-3">
+                              <label>URL</label>
+                              <input type="text" class="form-control" [(ngModel)]="item.url">
+                          </div>
+                          <div class="col-md-12 mb-3">
                               <label for="firstName">Descripción</label>
                               <textarea class="form-control" rows="2" [(ngModel)]="item.description"></textarea>
                           </div>

@@ -20,6 +20,7 @@ export class SistemasComponent implements OnInit {
     items: Sistema[];
     displayDialog: boolean;
     loading: boolean;
+    
     constructor(private service:SistemaService) {}
   
     ngOnInit() {
@@ -51,7 +52,7 @@ export class SistemasComponent implements OnInit {
     }
 
     get(id:string,busqueda:string){
-        this.service.get(id,this.inpBuscar)
+        this.service.get(id,busqueda)
         .subscribe(
             items => {
                 this.items = items;
@@ -87,4 +88,7 @@ export class SistemasComponent implements OnInit {
                 console.log('Error.Component.Update.')
             }));
     }
+
+    delete(){}
+
 }
