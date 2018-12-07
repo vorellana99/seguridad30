@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
+import { ToastModule } from 'primeng/toast'
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import { InputTextModule } from 'primeng/inputtext';
     FormsModule,
     InputTextModule,
     ButtonModule,
-    DialogModule
+    DialogModule,
+    ToastModule,
   ],
   declarations: [SistemasComponent],
   bootstrap: [SistemasComponent]

@@ -35,7 +35,7 @@ export class TrabajadorComponent implements OnInit {
   confirm(item:Trabajador) {
     
     this.confirmationService.confirm({
-        message: '¿Desea Agregar a '+ item.nombre + ' ' + item.apePaterno + ' ' + item.apeMaterno +' como usuario(a)?',
+        message: '¿Desea Agregar a <b>'+ item.nombre + ' ' + item.apePaterno + ' ' + item.apeMaterno +'</b> como usuario(a)?',
         acceptLabel:"Si",
         rejectLabel:"No",
         accept: () => {

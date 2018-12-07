@@ -4,6 +4,9 @@ import { routerTransition } from '../../router.animations';
 import { AccionPermiso } from '../../shared/models/accion-permiso';
 import { AccionPermisoService } from '../../shared/services/accion-permiso.service';
 
+import {MessageService} from 'primeng/api';
+
+
 export class PrimeClass implements AccionPermiso{
   constructor(public id?, public name?, public description?){}
 }
@@ -12,7 +15,7 @@ export class PrimeClass implements AccionPermiso{
   templateUrl: './acciones-permiso.component.html',
   styleUrls: ['./acciones-permiso.component.scss'],
   animations: [routerTransition()],
-  providers:[AccionPermisoService]
+  providers:[AccionPermisoService, MessageService]
 })
 export class AccionesPermisoComponent implements OnInit {
   inpBuscar:string = "";
@@ -21,7 +24,7 @@ export class AccionesPermisoComponent implements OnInit {
   items: AccionPermiso[];
   displayDialog: boolean;
   loading: boolean;
-  constructor(private service:AccionPermisoService) {}
+  constructor(private service:AccionPermisoService, private messageService:MessageService) {}
 
   ngOnInit() {
       this.loadGrid();    
@@ -44,11 +47,23 @@ export class AccionesPermisoComponent implements OnInit {
       this.displayDialog = true;
   }
 
+  validation(){
+    if(this.item.id == null || this.item.name == null || this.item.description == null)
+        return false;
+    if(this.item.id.trim() == '' || this.item.name.trim() == '' || this.item.description.trim() == '')
+        return false;
+    return true;
+  }
+
   save() {
-      if (this.newItem) 
-          this.add(this.item);
-      else
-          this.update(this.item);
+    if(this.validation()){
+        if (this.newItem) 
+            this.add(this.item);
+        else
+            this.update(this.item);
+    }else{
+      this.messageService.add({key: 'tst-info', severity:'info', detail: 'Los campos con asterisco (*) son obligatorios.'});
+    }
   }
 
   get(id:string,busqueda:string){

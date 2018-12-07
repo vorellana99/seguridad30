@@ -44,22 +44,22 @@
                     <p-dialog header="Perfil" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [closable]="true" [width]="350">
                         <div class="ui-g ui-fluid" *ngIf="item">
                             <div class="col-md-12 mb-3">
-                                <label for="firstName">Código</label>
+                                <label>Código <b style="color:red">*</b></label>
                                 <input type="text" class="form-control" [(ngModel)]="item.id" disabled="{{!newItem}}">
                             </div>
                             <div class="col-md-12 mb-3">
-                                <label>Nombre</label>
+                                <label>Nombre <b style="color:red">*</b></label>
                                 <input type="text" class="form-control" [(ngModel)]="item.name">
                             </div>
                             <div class="col-md-12 mb-3">
-                                <label for="firstName">Descripción</label>
+                                <label>Descripción <b style="color:red">*</b></label>
                                 <textarea class="form-control" rows="2" [(ngModel)]="item.description"></textarea>
                             </div>
                         </div>
     
                         <p-footer>
                             <div class="ui-dialog-buttonpane ui-helper-clearfix">
-                                <button type="button" pButton icon="pi pi-times" (click)="delete()" label="Eliminar" class="ui-button-danger"></button>
+                                <!-- <button type="button" pButton icon="pi pi-times" (click)="delete()" label="Eliminar" class="ui-button-danger"></button> -->
                                 <button type="button" pButton icon="pi pi-check" (click)="save()" label="Guardar" class="ui-button-success"></button>
                             </div>
                         </p-footer>
@@ -76,3 +76,5 @@
 <p-dialog [header]="headerDialog" [(visible)]="displayDialogPerfil" [responsive]="true" showEffect="fade" [modal]="true" [closable]="true" [width]="800">
         <app-permisos></app-permisos>
 </p-dialog>
+
+<p-toast key="tst-info" position="center"></p-toast>

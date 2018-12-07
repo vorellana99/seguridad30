@@ -3,6 +3,7 @@ import { routerTransition } from '../../router.animations';
 
 import { TipoRecurso } from '../../shared/models/tipo-recurso';
 import { TipoRecursoService } from '../../shared/services/tipo-recurso.service';
+import {MessageService} from 'primeng/api';
 
 export class PrimeClass implements TipoRecurso{
   constructor(public id?, public name?, public description?){}
@@ -12,7 +13,7 @@ export class PrimeClass implements TipoRecurso{
   templateUrl: './tipos-recurso.component.html',
   styleUrls: ['./tipos-recurso.component.scss'],
   animations: [routerTransition()],
-  providers:[TipoRecursoService]
+  providers:[TipoRecursoService,MessageService]
 })
 export class TiposRecursoComponent implements OnInit {
   inpBuscar:string = "";
@@ -21,7 +22,7 @@ export class TiposRecursoComponent implements OnInit {
   items: TipoRecurso[];
   displayDialog: boolean;
   loading: boolean;
-  constructor(private service:TipoRecursoService) {}
+  constructor(private service:TipoRecursoService, private messageService:MessageService) {}
 
   ngOnInit() {
       this.loadGrid();    
@@ -42,6 +43,14 @@ export class TiposRecursoComponent implements OnInit {
       this.newItem = false;
       this.item = {...event.data};
       this.displayDialog = true;
+  }
+
+  validation(){
+    if(this.item.id == null || this.item.name == null || this.item.description == null)
+        return false;
+    if(this.item.id.trim() == '' || this.item.name.trim() == '' || this.item.description.trim() == '')
+        return false;
+    return true;
   }
 
   save() {

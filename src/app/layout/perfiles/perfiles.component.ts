@@ -3,7 +3,7 @@ import { routerTransition } from '../../router.animations';
 import { Perfil } from '../../shared/models/perfil';
 import { PerfilService } from '../../shared/services/perfil.service';
 import { PermisosComponent } from '../permisos/permisos.component';
-
+import { MessageService } from 'primeng/api';
 export class PrimeClass implements Perfil{
     constructor(public id?, public name?, public description?){}
 }
@@ -12,7 +12,7 @@ export class PrimeClass implements Perfil{
     templateUrl: './perfiles.component.html',
     styleUrls: ['./perfiles.component.scss'],
     animations: [routerTransition()],
-      providers:[PerfilService]
+      providers:[PerfilService, MessageService]
 })
 export class PerfilesComponent implements OnInit {
     inpBuscar:string = "";
@@ -25,7 +25,7 @@ export class PerfilesComponent implements OnInit {
     @ViewChild(PermisosComponent) private permisosComponent: PermisosComponent;
     headerDialog: string = "";
 
-    constructor(private service: PerfilService) {}
+    constructor(private service: PerfilService, private messageService:MessageService) {}
   
     ngAfterViewInit(){
         // this.permisosComponent.loadGrid();

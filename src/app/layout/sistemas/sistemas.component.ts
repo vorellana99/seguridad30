@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { Sistema } from '../../shared/models/sistema';
 import { SistemaService } from '../../shared/services/sistema.service';
+import {MessageService} from 'primeng/api';
 
 export class PrimeClass implements Sistema{
     constructor(public id?, public name?, public description?){}
@@ -11,7 +12,7 @@ export class PrimeClass implements Sistema{
     templateUrl: './sistemas.component.html',
     styleUrls: ['./sistemas.component.scss'],
     animations: [routerTransition()],
-    providers:[SistemaService]
+    providers:[SistemaService, MessageService]
 })
 export class SistemasComponent implements OnInit {
     inpBuscar:string = "";
@@ -21,7 +22,7 @@ export class SistemasComponent implements OnInit {
     displayDialog: boolean;
     loading: boolean;
     
-    constructor(private service:SistemaService) {}
+    constructor(private service:SistemaService, private messageService:MessageService) {}
   
     ngOnInit() {
         this.loadGrid();    

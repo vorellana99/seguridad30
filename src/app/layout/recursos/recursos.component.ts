@@ -4,6 +4,7 @@ import { Recurso } from '../../shared/models/recurso';
 import { RecursoService } from '../../shared/services/recurso.service';
 import { TipoRecursoService } from '../../shared/services/tipo-recurso.service';
 import { TipoRecurso } from 'src/app/shared/models/tipo-recurso';
+import { MessageService } from 'primeng/api';
 export class PrimeClass implements Recurso{
   constructor(public id?, public name?, public description?){}
 }
@@ -12,7 +13,7 @@ export class PrimeClass implements Recurso{
   templateUrl: './recursos.component.html',
   styleUrls: ['./recursos.component.scss'],
   animations: [routerTransition()],
-  providers:[RecursoService, TipoRecursoService]
+  providers:[RecursoService, TipoRecursoService, MessageService]
 })
 export class RecursosComponent implements OnInit {
   inpBuscar:string = "";
@@ -23,7 +24,7 @@ export class RecursosComponent implements OnInit {
   loading: boolean;
   tiposRecurso: TipoRecurso[];
 
-  constructor(private service:RecursoService, private tipoRecursoService: TipoRecursoService) {}
+  constructor(private service:RecursoService, private tipoRecursoService: TipoRecursoService, private messageService:MessageService) {}
 
   ngOnInit() {
       this.loadGrid();    

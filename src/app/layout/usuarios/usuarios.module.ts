@@ -11,6 +11,7 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast'
 
 @NgModule({
     imports: [
@@ -23,7 +24,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
         InputTextModule,
         ButtonModule,
         DialogModule,
-        ConfirmDialogModule
+        ConfirmDialogModule,
+        ToastModule
     ],
     declarations: [UsuariosComponent,TrabajadorComponent],
     bootstrap: [UsuariosComponent]

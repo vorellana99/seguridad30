@@ -3,6 +3,7 @@ import { routerTransition } from '../../router.animations';
 import { Usuario } from '../../shared/models/usuario';
 import { UsuarioService } from '../../shared/services/usuario.service';
 import { ConfirmationService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 
 export class PrimeClass implements Usuario{
   constructor(public codigo?, public name?, public description?){}
@@ -12,7 +13,7 @@ export class PrimeClass implements Usuario{
   templateUrl: './usuarios.component.html',
   styleUrls: ['./usuarios.component.scss'],
   animations: [routerTransition()],
-  providers:[UsuarioService,ConfirmationService]
+  providers:[UsuarioService, ConfirmationService, MessageService]
 })
 export class UsuariosComponent implements OnInit {
 
@@ -24,7 +25,7 @@ export class UsuariosComponent implements OnInit {
   loading: boolean;
 
   //constructor(private service: UsuarioService) {}
-  constructor(private service: UsuarioService, private confirmationService: ConfirmationService) {}
+  constructor(private service: UsuarioService, private confirmationService: ConfirmationService, private messageService:MessageService) {}
 
   ngOnInit() {
       this.loadGrid();
@@ -33,14 +34,6 @@ export class UsuariosComponent implements OnInit {
   closeDialogHandler(mival: boolean){
     this.displayDialog = mival;
     this.loadGrid();
-  }
-
-  confirm() {
-    this.confirmationService.confirm({
-    message: 'Are you sure that you want to perform this action?',
-    accept: () => {
-        //Actual logic to perform a confirmation
-    }});
   }
 
   loadGrid(){
@@ -59,13 +52,6 @@ export class UsuariosComponent implements OnInit {
     //   this.item = {...event.data};
     //   this.displayDialog = true;
   }
-
-//   save() {
-//       if (this.newItem) 
-//           this.add(this.item);
-//       else
-//           this.update(this.item);
-//   }
 
   save() {
       if (this.newItem) 

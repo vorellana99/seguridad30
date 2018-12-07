@@ -15,7 +15,6 @@
                           </button>
                       </div>
                   </div>
-                  <!-- <button type="button" pButton icon="pi pi-plus" (click)="confirm()" label="Confirm ps"></button> -->
               </div>  
               <div class="col-md-12 mb-3">
                   <p-table [value]="items" selectionMode="single" (onRowSelect)="onRowSelect($event)" [loading]="loading" [loadingIcon]="" [scrollable]="true">
@@ -53,3 +52,5 @@
   </div>
 <!-- /.row -->
 </div>
+
+<p-toast key="tst-info" position="center"></p-toast>
