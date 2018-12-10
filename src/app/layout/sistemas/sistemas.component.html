@@ -37,7 +37,8 @@
                         </ng-template>
                     </p-table>
 
-                    <p-dialog header="Sistema" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [closable]="true" [width]="350">
+                    <p-dialog header="Sistema" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" 
+                        [modal]="true" [closable]="true" [width]="350" appendTo="body">
                         <div class="ui-g ui-fluid" *ngIf="item">
                             <div class="col-md-12 mb-3">
                                 <label>Código <b style="color:red">*</b></label>

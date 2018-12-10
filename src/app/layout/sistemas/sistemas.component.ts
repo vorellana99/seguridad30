@@ -4,33 +4,33 @@ import { Sistema } from '../../shared/models/sistema';
 import { SistemaService } from '../../shared/services/sistema.service';
 import {MessageService} from 'primeng/api';
 
-export class PrimeClass implements Sistema{
-    constructor(public id?, public name?, public description?){}
+export class PrimeClass implements Sistema {
+    constructor(public id?, public name?, public description?) {}
 }
 @Component({
     selector: 'app-sistemas',
     templateUrl: './sistemas.component.html',
     styleUrls: ['./sistemas.component.scss'],
     animations: [routerTransition()],
-    providers:[SistemaService, MessageService]
+    providers: [SistemaService, MessageService]
 })
 export class SistemasComponent implements OnInit {
-    inpBuscar:string = "";
+    inpBuscar = '';
     newItem: boolean;
-    item:Sistema = new PrimeClass();
+    item: Sistema = new PrimeClass();
     items: Sistema[];
     displayDialog: boolean;
     loading: boolean;
-    
-    constructor(private service:SistemaService, private messageService:MessageService) {}
-  
+
+    constructor(private service: SistemaService, private messageService: MessageService) {}
+
     ngOnInit() {
-        this.loadGrid();    
+        this.loadGrid();
     }
 
-    loadGrid(){
+    loadGrid() {
         this.loading = true;
-        this.get('',this.inpBuscar);
+        this.get('', this.inpBuscar);
     }
 
     showDialogToAdd() {
@@ -45,51 +45,78 @@ export class SistemasComponent implements OnInit {
         this.displayDialog = true;
     }
 
-    save() {
-        if (this.newItem) 
-            this.add(this.item);
-        else
-            this.update(this.item);
+    validation() {
+        if (this.item.id == null || this.item.name == null || this.item.description == null) {
+            return false;
+        }
+        if (this.item.id.trim() === '' || this.item.name.trim() === '' || this.item.description.trim() === '') {
+            return false;
+        }
+        return true;
     }
 
-    get(id:string,busqueda:string){
-        this.service.get(id,busqueda)
+    save() {
+        if (this.validation()) {
+            if (this.newItem) {
+                this.add(this.item);
+            } else {
+                this.update(this.item);
+            }
+        } else {
+          this.messageService.add({key: 'tst-info', severity: 'info', detail: 'Los campos con asterisco (*) son obligatorios.'});
+        }
+    }
+
+    get(id: string, busqueda: string) {
+        this.service.get(id, busqueda)
         .subscribe(
             items => {
                 this.items = items;
                 console.log('Ok.Component.Read.');
                 this.loading = false;
-            },(error=>{
-                console.log('Error.Component.Read.')
+            }, (error => {
+                console.log('Error.Component.Read.');
             }));
     }
-    
-    add(item:Sistema){
+
+    add(item: Sistema) {
         this.service.add(item)
         .subscribe(
             item => {
                 this.loadGrid(); // recarga la grilla
-                console.log('Ok.Component.Insert.')
+                console.log('Ok.Component.Insert.');
                 this.item = null;
                 this.displayDialog = false;
-            },(error=>{
-                console.log('Error.Component.Insert.')
+            }, (error => {
+                console.log('Error.Component.Insert.');
             }));
     }
 
-    update(item:Sistema){
+    update(item: Sistema) {
         this.service.update(item)
         .subscribe(
             item => {
                 this.loadGrid(); // recarga la grilla
-                console.log('Ok.Component.Update')
+                console.log('Ok.Component.Update');
                 this.item = null;
                 this.displayDialog = false;
-            },(error=>{
-                console.log('Error.Component.Update.')
+            }, (error => {
+                console.log('Error.Component.Update.');
             }));
     }
 
-    delete(){}
+    // me quede aqui. falta utilizar este metodo
+    delete(id: string) {
+        this.service.delete(id)
+        .subscribe(
+            item => {
+                this.loadGrid();
+                console.log('Ok.Component.Delete');
+                this.item = null;
+                this.displayDialog = false;
+            }, (error => {
+                console.log('Error.Component.Delete');
+            }));
+    }
 
 }

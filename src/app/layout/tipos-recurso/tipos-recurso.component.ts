@@ -3,34 +3,34 @@ import { routerTransition } from '../../router.animations';
 
 import { TipoRecurso } from '../../shared/models/tipo-recurso';
 import { TipoRecursoService } from '../../shared/services/tipo-recurso.service';
-import {MessageService} from 'primeng/api';
+import { MessageService } from 'primeng/api';
 
-export class PrimeClass implements TipoRecurso{
-  constructor(public id?, public name?, public description?){}
+export class PrimeClass implements TipoRecurso {
+  constructor(public id?, public name?, public description?) {}
 }
 @Component({
   selector: 'app-tipos-recurso',
   templateUrl: './tipos-recurso.component.html',
   styleUrls: ['./tipos-recurso.component.scss'],
   animations: [routerTransition()],
-  providers:[TipoRecursoService,MessageService]
+  providers: [TipoRecursoService, MessageService]
 })
 export class TiposRecursoComponent implements OnInit {
-  inpBuscar:string = "";
+  inpBuscar = '';
   newItem: boolean;
-  item:TipoRecurso = new PrimeClass();
+  item: TipoRecurso = new PrimeClass();
   items: TipoRecurso[];
   displayDialog: boolean;
   loading: boolean;
-  constructor(private service:TipoRecursoService, private messageService:MessageService) {}
+  constructor(private service: TipoRecursoService, private messageService: MessageService) {}
 
   ngOnInit() {
-      this.loadGrid();    
+      this.loadGrid();
   }
 
-  loadGrid(){
+  loadGrid() {
       this.loading = true;
-      this.get('',this.inpBuscar);
+      this.get('', this.inpBuscar);
   }
 
   showDialogToAdd() {
@@ -45,59 +45,66 @@ export class TiposRecursoComponent implements OnInit {
       this.displayDialog = true;
   }
 
-  validation(){
-    if(this.item.id == null || this.item.name == null || this.item.description == null)
+  validation() {
+    if (this.item.id == null || this.item.name == null || this.item.description == null) {
         return false;
-    if(this.item.id.trim() == '' || this.item.name.trim() == '' || this.item.description.trim() == '')
+    }
+    if (this.item.id.trim() === '' || this.item.name.trim() === '' || this.item.description.trim() === '') {
         return false;
+    }
     return true;
   }
 
   save() {
-      if (this.newItem) 
-          this.add(this.item);
-      else
-          this.update(this.item);
+    if (this.validation()) {
+        if (this.newItem) {
+            this.add(this.item);
+        } else {
+            this.update(this.item);
+        }
+    } else {
+      this.messageService.add({key: 'tst-info', severity: 'info', detail: 'Los campos con asterisco (*) son obligatorios.'});
+    }
   }
 
-  get(id:string,busqueda:string){
-      this.service.get(id,this.inpBuscar)
+  get(id: string, busqueda: string) {
+      this.service.get(id, this.inpBuscar)
       .subscribe(
           items => {
               this.items = items;
               console.log('Ok.Component.Read.');
               this.loading = false;
-          },(error=>{
-              console.log('Error.Component.Read.')
+          }, (error => {
+              console.log('Error.Component.Read.');
           }));
   }
-  
-  add(item:TipoRecurso){
+
+  add(item: TipoRecurso) {
       this.service.add(item)
       .subscribe(
           item => {
               this.loadGrid(); // recarga la grilla
-              console.log('Ok.Component.Insert.')
+              console.log('Ok.Component.Insert.');
               this.item = null;
               this.displayDialog = false;
-          },(error=>{
-              console.log('Error.Component.Insert.')
+          }, (error => {
+              console.log('Error.Component.Insert.');
           }));
   }
 
-  update(item:TipoRecurso){
+  update(item: TipoRecurso) {
       this.service.update(item)
       .subscribe(
           item => {
               this.loadGrid(); // recarga la grilla
-              console.log('Ok.Component.Update')
+              console.log('Ok.Component.Update');
               this.item = null;
               this.displayDialog = false;
-          },(error=>{
-              console.log('Error.Component.Update.')
+          }, (error => {
+              console.log('Error.Component.Update.');
           }));
   }
 
-  delete(){}
-  
+  delete() {}
+
 }
