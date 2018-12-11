@@ -51,120 +51,120 @@ export class PermisosComponent implements OnInit {
                 private accionPermisoService:AccionPermisoService, private detallePermisoService: DetallePermisoService, 
                 private messageService:MessageService) {}
   
-  ngOnInit() {
-      // this.loadGrid();    
-      this.getAccionesPermiso('');
-  }
+    ngOnInit() {
+        // this.loadGrid();    
+        this.getAccionesPermiso('');
+    }
 
-  loadGrid(busqueda:string){
-      this.loading = true;
-      this.get(this.roleId);
-  }
+    loadGrid(busqueda:string){
+        this.loading = true;
+        this.get(this.roleId);
+    }
 
-  loadGridRecursos(){
-    this.loadingRecursos = true;
-    this.getRecursos(this.inpBuscarRecursos);
-}
+    loadGridRecursos(){
+        this.loadingRecursos = true;
+        this.getRecursos(this.inpBuscarRecursos);
+    }
 
-  showDialogToAdd() {
-    //   this.newItem = true;
-    //   this.item = new PrimeClass();
-      this.loadGridRecursos();
-      this.displayDialog = true;
-  }
+    showDialogToAdd() {
+        //   this.newItem = true;
+        //   this.item = new PrimeClass();
+        this.loadGridRecursos();
+        this.displayDialog = true;
+    }
 
-  onRowSelect(event) {
-    //   this.newItem = false;
-      this.recurso = {...event.data};
-    //this.displayDialog = true;
-      this.displayDialogAccion = true;
-      console.log("onRowSelect");
-      console.log(this.item);
-      // this.save(this.item);
-  }
+    onRowSelect(event) {
+        //   this.newItem = false;
+        this.recurso = {...event.data};
+        //this.displayDialog = true;
+        this.displayDialogAccion = true;
+        console.log("onRowSelect");
+        console.log(this.item);
+        // this.save(this.item);
+    }
 
-  deleteSelectedRecurso(recurso:Recurso){
-    this.messageService.clear();
-    this.messageService.add({key: 'deleteToast', severity:'warn', summary: 'Advertencia', detail: 'Permiso eliminado.'});
-    // console.log("Eliminando...");
-  }
+    deleteSelectedItem(item: Recurso){
+        this.messageService.clear();
+        this.messageService.add({key: 'tst-info', severity:'warn', summary: 'Advertencia', detail: 'Permiso eliminado.'});
+        // console.log("Eliminando...");
+    }
 
-  save() {
-      // tambien se puede eliminar...
-      console.log('save permiso');
-      this.item.roleId = this.roleId;
-      this.item.resourceId = this.recurso.id;
-      this.add(this.item);
-  }
+    save() {
+        // tambien se puede eliminar...
+        console.log('save permiso');
+        this.item.roleId = this.roleId;
+        this.item.resourceId = this.recurso.id;
+        this.add(this.item);
+    }
 
-  getRecursos(buscar:string){
-    this.recursoService.get('',buscar)
-    .subscribe(
-        items => {
-            this.recursos = items;
-            console.log('Ok.Component.Read.unoooo');
-            console.log(items);
-            this.loadingRecursos = false;
-        },(error=>{
-            console.log('Error.Component.Read.')
-        }));
-  }
+    getRecursos(buscar:string){
+        this.recursoService.get('',buscar)
+        .subscribe(
+            items => {
+                this.recursos = items;
+                console.log('Ok.Component.Read.unoooo');
+                console.log(items);
+                this.loadingRecursos = false;
+            },(error=>{
+                console.log('Error.Component.Read.')
+            }));
+    }
 
-  getAccionesPermiso(buscar:string){
-    this.accionPermisoService.get('',buscar)
-    .subscribe(
-        items => {
-            this.accionesPermiso = items;
-            console.log('Ok.Component.Read.getAccionesPermiso');
-            console.log(items);
-            this.loadingRecursos = false;
-        },(error=>{
-            console.log('Error.Component.Read.')
-        }));
-  }
+    getAccionesPermiso(buscar:string){
+        this.accionPermisoService.get('',buscar)
+        .subscribe(
+            items => {
+                this.accionesPermiso = items;
+                console.log('Ok.Component.Read.getAccionesPermiso');
+                console.log(items);
+                this.loadingRecursos = false;
+            },(error=>{
+                console.log('Error.Component.Read.')
+            }));
+    }
 
-  get(roleId:string){
-      this.service.get(roleId)
-      .subscribe(
-          items => {
-              this.items = items;
-              console.log('Ok.Component.Read.tresss');
-              console.log(items);
-              this.loading = false;
-          },(error=>{
-              console.log('Error.Component.Read.')
-          }));
-  }
-  
-  add(permiso:Permiso){
-      this.service.add(permiso)
-      .subscribe(   
-          item => {
-              console.log('Ok.Component.Insert. ADD PERMISO');
-              console.log(permiso);
-              var detallePermiso: DetallePermiso = new DetallePermisoPrimeClass();
-              detallePermiso.permissionId = item.id;
-              detallePermiso.description = '-';
-              detallePermiso.permissionActionId = this.selAccionPermiso;
-              // this.item = null; no destruir la lista, debe persistir.
-              this.displayDialog = false;
-              this.addDetallePermiso(detallePermiso); // grabando el detallePermiso
-          },(error=>{
-              console.log('Error.Component.Insert.')
-          }));
-  }
+    get(roleId:string){
+        this.service.get(roleId)
+        .subscribe(
+            items => {
+                this.items = items;
+                console.log('Ok.Component.Read.tresss');
+                console.log(items);
+                this.loading = false;
+            },(error=>{
+                console.log('Error.Component.Read.')
+            }));
+    }
+    
+    add(permiso:Permiso){
+        this.service.add(permiso)
+        .subscribe(   
+            item => {
+                console.log('Ok.Component.Insert. ADD PERMISO');
+                console.log(permiso);
+                var detallePermiso: DetallePermiso = new DetallePermisoPrimeClass();
+                detallePermiso.permissionId = item.id;
+                detallePermiso.description = '-';
+                detallePermiso.permissionActionId = this.selAccionPermiso;
+                // this.item = null; no destruir la lista, debe persistir.
+                this.displayDialog = false;
+                this.addDetallePermiso(detallePermiso); // grabando el detallePermiso
+            },(error=>{
+                console.log('Error.Component.Insert.')
+            }));
+    }
 
-  addDetallePermiso(item:DetallePermiso){
-    this.detallePermisoService.add(item)
-    .subscribe(
-        item => {
-            this.loadGrid(this.roleId); // recarga la grilla
-            console.log('Ok.Component.Insert.')
-            this.displayDialogAccion = false;
-        },(error=>{
-            console.log('Error.Component.Insert.')
-        }));
-  }   
+    addDetallePermiso(item:DetallePermiso){
+        this.detallePermisoService.add(item)
+        .subscribe(
+            item => {
+                this.loadGrid(this.roleId); // recarga la grilla
+                console.log('Ok.Component.Insert.')
+                this.displayDialogAccion = false;
+            },(error=>{
+                console.log('Error.Component.Insert.')
+            }));
+    }   
 
   // falta adaptar
   // update(item:Permiso){
@@ -180,6 +180,6 @@ export class PermisosComponent implements OnInit {
   //         }));
   // }
 
-  delete(){}
+    delete(){}
 
 }

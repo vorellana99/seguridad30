@@ -1,31 +1,43 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { Perfil } from '../../shared/models/perfil';
+import { Usuario } from '../../shared/models/usuario';
 import { PerfilService } from '../../shared/services/perfil.service';
+import { SistemaService } from '../../shared/services/sistema.service';
+import { UsuarioService } from '../../shared/services/usuario.service';
 import { PermisosComponent } from '../permisos/permisos.component';
 import { MessageService } from 'primeng/api';
+import { Sistema } from 'src/app/shared/models/sistema';
 export class PrimeClass implements Perfil {
-    constructor(public id?, public name?, public description?) {}
+    constructor(public id?, public name?,public customName?, public systemAppId?, public description?) {}
 }
 @Component({
     selector: 'app-perfiles',
     templateUrl: './perfiles.component.html',
     styleUrls: ['./perfiles.component.scss'],
     animations: [routerTransition()],
-      providers: [PerfilService, MessageService]
+      providers: [PerfilService, SistemaService, UsuarioService, MessageService]
 })
 export class PerfilesComponent implements OnInit {
     inpBuscar = '';
     newItem: boolean;
     item: Perfil = new PrimeClass();
     items: Perfil[];
+    usuarios: Usuario[];
+    usuariosGen: Usuario[];
+    sistemas: Sistema[];
     displayDialog: boolean;
     displayDialogPerfil: boolean;
+    displayDialogUsuario: boolean;
+    displayDialogUsuarioGen: boolean;
     loading: boolean;
+    loadingUsuarios: boolean;
     @ViewChild(PermisosComponent) private permisosComponent: PermisosComponent;
-    headerDialog = '';
+    headerDialogPermisos = '';
+    headerDialogUsuarios = 'Usuarios';
+    headerDialogUsuariosGen = 'Todos los usuarios'
 
-    constructor(private service: PerfilService, private messageService: MessageService) {}
+    constructor(private service: PerfilService, private sistemaService: SistemaService, private usuarioService: UsuarioService, private messageService: MessageService) {}
 
     ngAfterViewInit() {
         // this.permisosComponent.loadGrid();
@@ -34,14 +46,21 @@ export class PerfilesComponent implements OnInit {
 
     ngOnInit() {
         this.loadGrid();
+        this.getSistemas(0,'')
     }
 
-    selectPerfilWithButton(selectedItem: Perfil) {
+    selectPerfilPermisos(selectedItem: Perfil) {
         console.log(selectedItem);
         this.permisosComponent.roleId = selectedItem.id;
         this.permisosComponent.loadGrid('');
-        this.headerDialog = 'Permisos del perfil: ' + selectedItem.name;
+        this.headerDialogPermisos = 'Permisos del perfil: ' + selectedItem.name;
         this.displayDialogPerfil = true;
+    }
+
+    selectPerfilUsuarios(selectedItem: Perfil) {
+        console.log(selectedItem);
+        this.loadGridUsuarios(selectedItem.id);
+        this.displayDialogUsuario = true;
     }
 
     loadGrid() {
@@ -49,10 +68,19 @@ export class PerfilesComponent implements OnInit {
         this.get('', this.inpBuscar);
     }
 
+    loadGridUsuarios(roleId: string) {
+        this.loadingUsuarios = true;
+        this.getUsers(roleId);
+    }
+
     showDialogToAdd() {
         this.newItem = true;
         this.item = new PrimeClass();
         this.displayDialog = true;
+    }
+
+    showDialogUsuarioGen(){
+        this.displayDialogUsuarioGen = true;
     }
 
     onRowSelect(event) {
@@ -62,17 +90,55 @@ export class PerfilesComponent implements OnInit {
     }
 
     validation() {
-        if (this.item.id == null || this.item.name == null || this.item.description == null) {
+        if (this.item.customName == null || this.item.systemAppId == null || this.item.description == null) {
             return false;
         }
-        if (this.item.id.trim() === '' || this.item.name.trim() === '' || this.item.description.trim() === '') {
+        if (this.item.customName.trim() === '' || this.item.systemAppId.trim() === '' || this.item.description.trim() === '') {
             return false;
         }
         return true;
     }
 
+    getSistemas(id: number, busqueda: string) {
+        this.sistemaService.get(id, this.inpBuscar)
+        .subscribe(
+            items => {
+                this.sistemas = items;
+                console.log('Ok.Component.Read.');
+                this.loading = false;
+            }, (error => {
+                console.log('Error.Component.Read.');
+            }));
+    }
+
+    getUsers(roleId: string) {
+        this.service.getUsers(roleId)
+        .subscribe(
+            items => {
+                this.usuarios = items;
+                console.log('Ok.Component.Read.');
+                this.loadingUsuarios = false;
+            }, (error => {
+                console.log('Error.Component.Read.');
+            }));
+    }
+
+    // ME QUEDE AQUIE EN PROBAR ESTO
+    getUsersGen(id: string, busqueda: string) {
+        this.usuarioService.get(id, busqueda)
+        .subscribe(
+            items => {
+                this.usuariosGen = items;
+                console.log('Ok.Component.Read.');
+                this.loadingUsuarios = false;
+            }, (error => {
+                console.log('Error.Component.Read.');
+            }));
+    }
+
     save() {
         if (this.validation()) {
+            this.item.name = this.item.customName + '-' + this.item.systemAppId;
             if (this.newItem) {
                 this.add(this.item);
             } else {

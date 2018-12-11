@@ -32,9 +32,11 @@ export class TrabajadorComponent implements OnInit {
     this.loadGrid();
   }
 
-  confirm(item:Trabajador) {
+  confirmAdd(item:Trabajador) {
     
     this.confirmationService.confirm({
+        header: 'Confirmación',
+        icon: 'pi pi-exclamation-triangle',
         message: '¿Desea Agregar a <b>'+ item.nombre + ' ' + item.apePaterno + ' ' + item.apeMaterno +'</b> como usuario(a)?',
         acceptLabel:"Si",
         rejectLabel:"No",
@@ -66,7 +68,7 @@ export class TrabajadorComponent implements OnInit {
   onRowSelect(event) {
     // this.newItem = false;
     this.item = {...event.data};
-    this.confirm(this.item);
+    this.confirmAdd(this.item);
     
   }
 

@@ -1,5 +1,3 @@
-<p-toast key="deleteToast" position="center" ></p-toast>
-
 <div [@routerTransition]>
     <div class="row">
         <div class="col-lg-12">
@@ -30,7 +28,7 @@
                         <ng-template pTemplate="body" let-itemx>
                             <tr [pSelectableRow]="itemx">
                                 <td style="text-align: center">
-                                    <button pButton icon="pi pi-times" class="ui-button-danger" (click)="deleteSelectedRecurso(itemx)"></button>
+                                    <button pButton icon="pi pi-times" class="ui-button-danger" (click)="deleteSelectedItem(itemx)"></button>
                                 </td>
                                 <td>{{itemx.resource.id}}</td>
                                 <td>{{itemx.resource.name}}</td>
@@ -98,3 +96,5 @@
             </div>
         </p-footer>
 </p-dialog>
+
+<p-toast key="tst-info" position="center"></p-toast>

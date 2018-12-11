@@ -18,7 +18,7 @@
                     <p-table [value]="items" selectionMode="single" (onRowSelect)="onRowSelect($event)" [loading]="loading" [loadingIcon]="">
                         <ng-template pTemplate="header">
                             <tr>
-                                <th style="width:100px">Permisos</th>
+                                <th style="width:120px">Operación</th>
                                 <th>Codigo</th>
                                 <th>Nombre</th>
                                 <th>Descripción</th>
@@ -26,11 +26,13 @@
                         </ng-template>
                         <ng-template pTemplate="body" let-itemx>
                             <tr [pSelectableRow]="itemx">
-                                <td style="text-align: center">
-                                    <button pButton icon="pi pi-search" (click)="selectPerfilWithButton(itemx)"></button>
+                                <td style="text-align: center; width:120px">
+                                    <button pButton icon="pi pi-unlock" (click)="selectPerfilPermisos(itemx)" title="Establecer permisos"></button>
+                                    &nbsp;
+                                    <button pButton icon="pi pi-user" (click)="selectPerfilUsuarios(itemx)" title="Establecer usuarios"></button>
                                 </td>
                                 <td>{{itemx.id}}</td>
-                                <td>{{itemx.name}}</td>
+                                <td>{{itemx.customName}}</td>
                                 <td>{{itemx.description}}</td>
                             </tr>
                         </ng-template>
@@ -44,13 +46,21 @@
                     <p-dialog header="Perfil" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [closable]="true" [width]="350">
                         <div class="ui-g ui-fluid" *ngIf="item">
                             <div class="col-md-12 mb-3">
-                                <label>Código <b style="color:red">*</b></label>
-                                <input type="text" class="form-control" [(ngModel)]="item.id" disabled="{{!newItem}}">
+                                <label>Código </label>
+                                <input type="text" class="form-control" [(ngModel)]="item.id" disabled>
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label>Nombre <b style="color:red">*</b></label>
-                                <input type="text" class="form-control" [(ngModel)]="item.name">
+                                <input type="text" class="form-control" [(ngModel)]="item.customName">
                             </div>
+
+                            <div class="col-md-12 mb-3">
+                                <label>Tipo <b style="color:red">*</b></label>
+                                <select class="form-control" [(ngModel)]="item.systemAppId">
+                                    <option [value]="sistema.id" *ngFor="let sistema of sistemas">{{sistema.name}}</option>
+                                </select>
+                            </div>
+
                             <div class="col-md-12 mb-3">
                                 <label>Descripción <b style="color:red">*</b></label>
                                 <textarea class="form-control" rows="2" [(ngModel)]="item.description"></textarea>
@@ -59,7 +69,7 @@
     
                         <p-footer>
                             <div class="ui-dialog-buttonpane ui-helper-clearfix">
-                                <!-- <button type="button" pButton icon="pi pi-times" (click)="delete()" label="Eliminar" class="ui-button-danger"></button> -->
+                                <button type="button" pButton icon="pi pi-times" (click)="delete()" label="Eliminar" class="ui-button-danger"></button>
                                 <button type="button" pButton icon="pi pi-check" (click)="save()" label="Guardar" class="ui-button-success"></button>
                             </div>
                         </p-footer>
@@ -73,8 +83,98 @@
 
 <!-- <app-trabajador (eventCloseDialog)="closeDialogHandler($event)"></app-trabajador> -->
 <!-- <p-dialog header="Permisos del perfil: TTT" [(visible)]="displayDialogPerfil" [responsive]="true" showEffect="fade" [modal]="true" [closable]="true" [width]="800"> -->
-<p-dialog [header]="headerDialog" [(visible)]="displayDialogPerfil" [responsive]="true" showEffect="fade" [modal]="true" [closable]="true" [width]="800">
+<p-dialog [header]="headerDialogPermisos" [(visible)]="displayDialogPerfil" [responsive]="true" showEffect="fade" [modal]="true" [closable]="true" [width]="800">
         <app-permisos></app-permisos>
+</p-dialog>
+
+<p-dialog [header]="headerDialogUsuarios" [(visible)]="displayDialogUsuario" [responsive]="true" showEffect="fade" [modal]="true" [closable]="true" [width]="800">
+    <!-- <app-usuarios></app-usuarios> -->
+    <!-- <div class="col-md-4 mb-1">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Buscar" [(ngModel)]="inpBuscar" [ngModelOptions]="{standalone: true}" (keyup.enter)="loadGrid()" aria-label="Recipient's username" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" (click)="loadGrid()">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </div>   -->
+    <div class="col-md-12 mb-3">
+        <p-table [value]="usuarios" selectionMode="single" (onRowSelect)="onRowSelect($event)" [loading]="loading" [loadingIcon]="" [scrollable]="true">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 60px">Quitar</th>
+                    <th style="width: 200px">Nº Documento</th>
+                    <th style="width: 200px">Código </th>
+                    <th style="width: 200px">Nombre</th>
+                    <th style="width: 200px">Ap.Paterno</th>
+                    <th style="width: 200px">Ap.Materno</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-itemx>
+                <tr [pSelectableRow]="itemx">
+                    <td style="text-align: center; width: 60px">
+                        <button pButton icon="pi pi-times" class="ui-button-danger" (click)="deleteSelectedItem(itemx)"></button>
+                    </td>
+                    <td style="width: 200px">{{itemx.codigo}}</td>
+                    <td style="width: 200px">{{itemx.codigoCorp}}</td>
+                    <td style="width: 200px">{{itemx.nombre}}</td>
+                    <td style="width: 200px">{{itemx.apePaterno}}</td>
+                    <td style="width: 200px">{{itemx.apeMaterno}}</td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="summary" let-rowData>
+                <div style="text-align:left">
+                    <button type="button" pButton icon="pi pi-plus" (click)="showDialogUsuarioGen()" label="Agregar"></button>
+                </div>
+            </ng-template>
+        </p-table>
+
+
+        <!-- <p-dialog header="Trabajador" [(visible)]="displayDialogTrabajador" [responsive]="true" showEffect="fade" [modal]="true" [closable]="true" [width]="800">
+                <app-trabajador (eventCloseDialog)="closeDialogHandler($event)"></app-trabajador>
+        </p-dialog> -->
+    </div>            
+</p-dialog>
+
+<p-dialog [header]="headerDialogUsuariosGen" [(visible)]="displayDialogUsuarioGen" [responsive]="true" showEffect="fade" [modal]="true" [closable]="true" [width]="800" appendTo="body">
+    <div class="col-md-12 mb-3">
+        <p-table [value]="usuariosGen" selectionMode="single" (onRowSelect)="onRowSelect($event)" [loading]="loading" [loadingIcon]="" [scrollable]="true">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 60px">Quitar</th>
+                    <th style="width: 200px">Nº Documento</th>
+                    <th style="width: 200px">Código </th>
+                    <th style="width: 200px">Nombre</th>
+                    <th style="width: 200px">Ap.Paterno</th>
+                    <th style="width: 200px">Ap.Materno</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-itemx>
+                <tr [pSelectableRow]="itemx">
+                    <td style="text-align: center; width: 60px">
+                        <button pButton icon="pi pi-times" class="ui-button-danger" (click)="deleteSelectedItem(itemx)"></button>
+                    </td>
+                    <td style="width: 200px">{{itemx.codigo}}</td>
+                    <td style="width: 200px">{{itemx.codigoCorp}}</td>
+                    <td style="width: 200px">{{itemx.nombre}}</td>
+                    <td style="width: 200px">{{itemx.apePaterno}}</td>
+                    <td style="width: 200px">{{itemx.apeMaterno}}</td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="summary" let-rowData>
+                <div style="text-align:left">
+                    <button type="button" pButton icon="pi pi-plus" (click)="showDialogUsuarioGen()" label="Agregar"></button>
+                </div>
+            </ng-template>
+        </p-table>
+
+
+        <!-- <p-dialog header="Trabajador" [(visible)]="displayDialogTrabajador" [responsive]="true" showEffect="fade" [modal]="true" [closable]="true" [width]="800">
+                <app-trabajador (eventCloseDialog)="closeDialogHandler($event)"></app-trabajador>
+        </p-dialog> -->
+    </div> 
+
 </p-dialog>
 
 <p-toast key="tst-info" position="center"></p-toast>

@@ -30,7 +30,7 @@ export class SistemasComponent implements OnInit {
 
     loadGrid() {
         this.loading = true;
-        this.get('', this.inpBuscar);
+        this.get(0, this.inpBuscar);
     }
 
     showDialogToAdd() {
@@ -46,10 +46,10 @@ export class SistemasComponent implements OnInit {
     }
 
     validation() {
-        if (this.item.id == null || this.item.name == null || this.item.description == null) {
+        if (this.item.name == null || this.item.description == null) {
             return false;
         }
-        if (this.item.id.trim() === '' || this.item.name.trim() === '' || this.item.description.trim() === '') {
+        if (this.item.name.trim() === '' || this.item.description.trim() === '') {
             return false;
         }
         return true;
@@ -67,7 +67,7 @@ export class SistemasComponent implements OnInit {
         }
     }
 
-    get(id: string, busqueda: string) {
+    get(id: number, busqueda: string) {
         this.service.get(id, busqueda)
         .subscribe(
             items => {
@@ -106,7 +106,7 @@ export class SistemasComponent implements OnInit {
     }
 
     // me quede aqui. falta utilizar este metodo
-    delete(id: string) {
+    delete(id: number) {
         this.service.delete(id)
         .subscribe(
             item => {

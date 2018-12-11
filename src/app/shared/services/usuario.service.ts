@@ -33,6 +33,12 @@ export class UsuarioService {
             catchError(this.handleError('Error.Service.Update.')));
     }
 
+    delete(id: string): Observable<Usuario> {
+        return this.http.delete<Usuario>(this.url + '/' + id, httpOptions).pipe(
+            tap((item: Usuario) => console.log('Ok.Service.Delete.')),
+            catchError(this.handleError('Error.Service.Delete.')));
+    }
+
     private handleError<T> (operation = 'operation', result?: T){
         return (error: any): Observable<T> => {
             console.log(`${operation} failed_v99: ${error.message}`);

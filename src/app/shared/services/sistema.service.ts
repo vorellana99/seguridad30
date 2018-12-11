@@ -15,7 +15,7 @@ export class SistemaService {
 
     constructor(private http: HttpClient) {}
 
-    get (id: string, busqueda: string): Observable<Sistema[]> {
+    get (id: number, busqueda: string): Observable<Sistema[]> {
         return this.http.get<Sistema[]>(this.url + '?id=' + id + '&busqueda=' + busqueda)
             .pipe(
             tap(_ => console.log('OK.Service.Read.')),
@@ -35,8 +35,8 @@ export class SistemaService {
             catchError(this.handleError('Error.Service.Update.')));
     }
 
-    delete(id: string): Observable<Sistema> {
-        return this.http.delete<Sistema>('myUrl', httpOptions).pipe(
+    delete(id: number): Observable<Sistema> {
+        return this.http.delete<Sistema>(this.url + '/' + id, httpOptions).pipe(
             tap((item: Sistema) => console.log('Ok.Service.Delete.')),
             catchError(this.handleError('Error.Service.Delete.')));
     }

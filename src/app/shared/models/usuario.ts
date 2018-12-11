@@ -1,4 +1,5 @@
 export interface Usuario {
+    id?;
     codigo?;
     codigoCorp?;
     nombre?;

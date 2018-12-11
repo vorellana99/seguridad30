@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Perfil } from '../models/perfil';
+import { Usuario } from '../models/usuario';
 
 const httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -16,6 +17,14 @@ export class PerfilService {
 
     get (id:string, busqueda:string): Observable<Perfil[]> {
         return this.http.get<Perfil[]>(this.url + '?id=' + id + '&busqueda='+ busqueda)
+            .pipe(
+            tap(_ => console.log('OK.Service.Read.')),
+            catchError(this.handleError('Error.Service.Read.', []))
+            );
+    };
+
+    getUsers (roleId:string): Observable<Usuario[]> {
+        return this.http.get<Usuario[]>(this.url + '/GetUsers?roleId=' + roleId)
             .pipe(
             tap(_ => console.log('OK.Service.Read.')),
             catchError(this.handleError('Error.Service.Read.', []))

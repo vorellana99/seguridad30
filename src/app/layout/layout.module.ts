@@ -17,7 +17,7 @@ import { HeaderComponent } from './components/header/header.component';
     declarations: [
         LayoutComponent, 
         SidebarComponent, 
-        HeaderComponent
+        HeaderComponent,
     ]
 })
 export class LayoutModule {}
