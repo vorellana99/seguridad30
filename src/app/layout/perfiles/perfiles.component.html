@@ -100,7 +100,7 @@
         </div>
     </div>   -->
     <div class="col-md-12 mb-3">
-        <p-table [value]="usuarios" selectionMode="single" (onRowSelect)="onRowSelect($event)" [loading]="loading" [loadingIcon]="" [scrollable]="true">
+        <p-table [value]="usuarios" selectionMode="single" [loading]="loading" [loadingIcon]="" [scrollable]="true">
             <ng-template pTemplate="header">
                 <tr>
                     <th style="width: 60px">Quitar</th>
@@ -139,10 +139,9 @@
 
 <p-dialog [header]="headerDialogUsuariosGen" [(visible)]="displayDialogUsuarioGen" [responsive]="true" showEffect="fade" [modal]="true" [closable]="true" [width]="800" appendTo="body">
     <div class="col-md-12 mb-3">
-        <p-table [value]="usuariosGen" selectionMode="single" (onRowSelect)="onRowSelect($event)" [loading]="loading" [loadingIcon]="" [scrollable]="true">
+        <p-table [value]="usuariosGen" selectionMode="single" (onRowSelect)="onRowSelectUsuarioGen($event)" [loading]="loading" [loadingIcon]="" [scrollable]="true">
             <ng-template pTemplate="header">
                 <tr>
-                    <th style="width: 60px">Quitar</th>
                     <th style="width: 200px">Nº Documento</th>
                     <th style="width: 200px">Código </th>
                     <th style="width: 200px">Nombre</th>
@@ -152,9 +151,6 @@
             </ng-template>
             <ng-template pTemplate="body" let-itemx>
                 <tr [pSelectableRow]="itemx">
-                    <td style="text-align: center; width: 60px">
-                        <button pButton icon="pi pi-times" class="ui-button-danger" (click)="deleteSelectedItem(itemx)"></button>
-                    </td>
                     <td style="width: 200px">{{itemx.codigo}}</td>
                     <td style="width: 200px">{{itemx.codigoCorp}}</td>
                     <td style="width: 200px">{{itemx.nombre}}</td>
@@ -162,19 +158,11 @@
                     <td style="width: 200px">{{itemx.apeMaterno}}</td>
                 </tr>
             </ng-template>
-            <ng-template pTemplate="summary" let-rowData>
-                <div style="text-align:left">
-                    <button type="button" pButton icon="pi pi-plus" (click)="showDialogUsuarioGen()" label="Agregar"></button>
-                </div>
-            </ng-template>
         </p-table>
-
-
-        <!-- <p-dialog header="Trabajador" [(visible)]="displayDialogTrabajador" [responsive]="true" showEffect="fade" [modal]="true" [closable]="true" [width]="800">
-                <app-trabajador (eventCloseDialog)="closeDialogHandler($event)"></app-trabajador>
-        </p-dialog> -->
     </div> 
 
 </p-dialog>
 
 <p-toast key="tst-info" position="center"></p-toast>
+
+<p-confirmDialog width="425" appendTo="body"> </p-confirmDialog>

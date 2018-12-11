@@ -5,18 +5,20 @@ import { Usuario } from '../../shared/models/usuario';
 import { PerfilService } from '../../shared/services/perfil.service';
 import { SistemaService } from '../../shared/services/sistema.service';
 import { UsuarioService } from '../../shared/services/usuario.service';
+import { ConfirmationService } from 'primeng/api';
 import { PermisosComponent } from '../permisos/permisos.component';
 import { MessageService } from 'primeng/api';
 import { Sistema } from 'src/app/shared/models/sistema';
 export class PrimeClass implements Perfil {
-    constructor(public id?, public name?,public customName?, public systemAppId?, public description?) {}
+    constructor(public id?, public name?, public customName?, public systemAppId?, public description?) {}
 }
 @Component({
     selector: 'app-perfiles',
     templateUrl: './perfiles.component.html',
     styleUrls: ['./perfiles.component.scss'],
     animations: [routerTransition()],
-      providers: [PerfilService, SistemaService, UsuarioService, MessageService]
+      providers: [  PerfilService, SistemaService, UsuarioService,
+                    MessageService, ConfirmationService]
 })
 export class PerfilesComponent implements OnInit {
     inpBuscar = '';
@@ -32,12 +34,15 @@ export class PerfilesComponent implements OnInit {
     displayDialogUsuarioGen: boolean;
     loading: boolean;
     loadingUsuarios: boolean;
+    loadingUsuariosGen: boolean;
     @ViewChild(PermisosComponent) private permisosComponent: PermisosComponent;
     headerDialogPermisos = '';
     headerDialogUsuarios = 'Usuarios';
-    headerDialogUsuariosGen = 'Todos los usuarios'
+    headerDialogUsuariosGen = 'Todos los usuarios';
 
-    constructor(private service: PerfilService, private sistemaService: SistemaService, private usuarioService: UsuarioService, private messageService: MessageService) {}
+    constructor(private service: PerfilService, private sistemaService: SistemaService,
+                private usuarioService: UsuarioService, private messageService: MessageService,
+                private confirmationService: ConfirmationService) {}
 
     ngAfterViewInit() {
         // this.permisosComponent.loadGrid();
@@ -46,7 +51,7 @@ export class PerfilesComponent implements OnInit {
 
     ngOnInit() {
         this.loadGrid();
-        this.getSistemas(0,'')
+        this.getSistemas(0, '');
     }
 
     selectPerfilPermisos(selectedItem: Perfil) {
@@ -73,13 +78,19 @@ export class PerfilesComponent implements OnInit {
         this.getUsers(roleId);
     }
 
+    loadGridUsuariosGen(id: string, busqueda: string) {
+        this.loadingUsuariosGen = true;
+        this.getUsersGen(id, busqueda);
+    }
+
     showDialogToAdd() {
         this.newItem = true;
         this.item = new PrimeClass();
         this.displayDialog = true;
     }
 
-    showDialogUsuarioGen(){
+    showDialogUsuarioGen() {
+        this.loadGridUsuariosGen('', '');
         this.displayDialogUsuarioGen = true;
     }
 
@@ -87,6 +98,25 @@ export class PerfilesComponent implements OnInit {
         this.newItem = false;
         this.item = {...event.data};
         this.displayDialog = true;
+    }
+
+    onRowSelectUsuarioGen(event) {
+        console.log(event);
+        this.confirmationService.confirm({
+            header: 'Confirmación',
+            icon: 'pi pi-exclamation-triangle',
+            message: '¿Desea agregar al usuario a <b>' +
+                 event.data.nombre + ' ' + event.data.apePaterno + ' ' + event.data.apeMaterno + '</b> ?',
+            acceptLabel: 'Si',
+            rejectLabel: 'No',
+            accept: () => {
+                // this.delete(item.id);
+            //   var usuario: Usuario = { userName:item.codigo, codigo:item.codigo, password:"asdfWER74!" }
+            //   this.addUsuario(usuario);
+            //   this.eventCloseDialog.emit(false);
+            }
+        });
+
     }
 
     validation() {
