@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { Perfil } from '../../shared/models/perfil';
 import { Usuario } from '../../shared/models/usuario';
+import { PerfilUsuario } from '../../shared/models/perfil-usuario';
 import { PerfilService } from '../../shared/services/perfil.service';
 import { SistemaService } from '../../shared/services/sistema.service';
 import { UsuarioService } from '../../shared/services/usuario.service';
@@ -17,16 +18,18 @@ export class PrimeClass implements Perfil {
     templateUrl: './perfiles.component.html',
     styleUrls: ['./perfiles.component.scss'],
     animations: [routerTransition()],
-      providers: [  PerfilService, SistemaService, UsuarioService,
-                    MessageService, ConfirmationService]
+    providers: [PerfilService, SistemaService, UsuarioService,
+                MessageService, ConfirmationService]
 })
 export class PerfilesComponent implements OnInit {
     inpBuscar = '';
     newItem: boolean;
     item: Perfil = new PrimeClass();
+    selectedItem: Perfil = new PrimeClass();
     items: Perfil[];
     usuarios: Usuario[];
     usuariosGen: Usuario[];
+    
     sistemas: Sistema[];
     displayDialog: boolean;
     displayDialogPerfil: boolean;
@@ -62,10 +65,32 @@ export class PerfilesComponent implements OnInit {
         this.displayDialogPerfil = true;
     }
 
-    selectPerfilUsuarios(selectedItem: Perfil) {
-        console.log(selectedItem);
-        this.loadGridUsuarios(selectedItem.id);
+    // selectPerfilUsuarios(selectedItem: Perfil) {
+    //     console.log(selectedItem);
+    //     this.loadGridUsuarios(selectedItem.id);
+    //     this.displayDialogUsuario = true;
+    // }
+
+    selectPerfilUsuarios(perfil: Perfil) {
+        this.selectedItem = perfil;
+        console.log(this.selectedItem);
+        this.loadGridUsuarios(this.selectedItem.id);
         this.displayDialogUsuario = true;
+    }
+
+    deleteSelectedUsuario(usuario: Usuario){
+        this.confirmationService.confirm({
+            header: 'Confirmación',
+            icon: 'pi pi-exclamation-triangle',
+            message: '¿Desea quitar al usuario a <b>' +
+                 usuario.nombre + ' ' + usuario.apePaterno + ' ' + usuario.apeMaterno + '</b> ?',
+            acceptLabel: 'Si',
+            rejectLabel: 'No',
+            accept: () => {
+                var perfilUsuario = {roleId: this.selectedItem.name, userId: usuario.id }
+                this.deleteUser(perfilUsuario);
+            }
+        });
     }
 
     loadGrid() {
@@ -110,10 +135,8 @@ export class PerfilesComponent implements OnInit {
             acceptLabel: 'Si',
             rejectLabel: 'No',
             accept: () => {
-                // this.delete(item.id);
-            //   var usuario: Usuario = { userName:item.codigo, codigo:item.codigo, password:"asdfWER74!" }
-            //   this.addUsuario(usuario);
-            //   this.eventCloseDialog.emit(false);
+                var perfilUsuario = {roleId: this.selectedItem.name, userId: event.data.id }
+                this.addUser(perfilUsuario);
             }
         });
 
@@ -204,6 +227,20 @@ export class PerfilesComponent implements OnInit {
             }));
     }
 
+    addUser(item: PerfilUsuario) {
+        this.service.addUser(item)
+        .subscribe(
+            item => {
+                this.messageService.add({key: 'tst-info', severity: 'info', detail: 'Se agregó el usuario al perfil.'});
+                this.loadGridUsuarios(this.selectedItem.id); // recarga la grilla
+                console.log('Ok.Component.Insert.');
+                // this.item = null;
+                this.displayDialogUsuarioGen = false;
+            }, (error => {
+                console.log('Error.Component.Insert.');
+            }));
+    }
+
     update(item: Perfil) {
         this.service.update(item)
         .subscribe(
@@ -218,4 +255,17 @@ export class PerfilesComponent implements OnInit {
     }
 
     delete() {}
+
+    deleteUser(item: PerfilUsuario) {
+        this.service.deleteUser(item)
+        .subscribe(
+            item => {
+                this.messageService.add({key: 'tst-info', severity: 'warn', detail: 'Se eliminó el usuario al perfil.'});
+                this.loadGridUsuarios(this.selectedItem.id);
+                console.log('Ok.Component.Delete');
+                // this.item = null;
+            }, (error => {
+                console.log('Error.Component.Delete');
+            }));
+    }
 }

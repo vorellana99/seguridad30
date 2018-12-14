@@ -28,7 +28,7 @@ export class DetallePermisoPrimeClass implements AccionPermiso{
   templateUrl: './permisos.component.html',
   styleUrls: ['./permisos.component.scss'],
   animations: [routerTransition()],
-  providers:[PermisoService, RecursoService, AccionPermisoService,DetallePermisoService, MessageService]
+  providers:[PermisoService, RecursoService, AccionPermisoService, DetallePermisoService, MessageService]
 })
 export class PermisosComponent implements OnInit {
 
@@ -83,10 +83,10 @@ export class PermisosComponent implements OnInit {
         // this.save(this.item);
     }
 
-    deleteSelectedItem(item: Recurso){
-        this.messageService.clear();
-        this.messageService.add({key: 'tst-info', severity:'warn', summary: 'Advertencia', detail: 'Permiso eliminado.'});
-        // console.log("Eliminando...");
+    deleteSelectedItem(algo){
+        console.log(algo);
+        this.deleteDetallePermiso(algo.permissionDetails[0].id);
+        //this.messageService.add({key: 'tst-info', severity:'warn', summary: 'Advertencia', detail: 'Permiso eliminado.'});
     }
 
     save() {
@@ -166,20 +166,20 @@ export class PermisosComponent implements OnInit {
             }));
     }   
 
-  // falta adaptar
-  // update(item:Permiso){
-  //     this.service.update(item)
-  //     .subscribe(
-  //         item => {
-  //             this.loadGrid(); // recarga la grilla
-  //             console.log('Ok.Component.Update')
-  //             this.item = null;
-  //             this.displayDialog = false;
-  //         },(error=>{
-  //             console.log('Error.Component.Update.')
-  //         }));
-  // }
-
-    delete(){}
+    
+    // este elimina todo, Permiso y DetallePermiso
+    deleteDetallePermiso(id: string) {
+        this.detallePermisoService.delete(id)
+        .subscribe(
+            item => {
+                this.messageService.add({key: 'tst-info', severity:'warn', summary: 'Advertencia', detail: 'Permiso eliminado.'});
+                this.loadGrid(this.roleId);
+                console.log('Ok.Component.Delete');
+                this.item = null;
+                this.displayDialog = false;
+            }, (error => {
+                console.log('Error.Component.Delete');
+            }));
+    }
 
 }

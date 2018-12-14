@@ -49,11 +49,11 @@ export class RecursosComponent implements OnInit {
   }
 
   validation() {
-    if (this.item.id == null || this.item.name == null || this.item.typeResourceId == null ||
+    if (this.item.name == null || this.item.typeResourceId == null ||
         this.item.url == null || this.item.description == null) {
         return false;
     }
-    if (this.item.id.trim() === '' || this.item.name.trim() === ''  || this.item.typeResourceId.trim() === '' ||
+    if (this.item.name.trim() === ''  || this.item.typeResourceId.trim() === '' ||
         this.item.url.trim() === '' || this.item.description.trim() === '') {
         return false;
     }
@@ -88,10 +88,11 @@ export class RecursosComponent implements OnInit {
       this.service.add(item)
       .subscribe(
           item => {
-              this.loadGrid(); // recarga la grilla
-              console.log('Ok.Component.Insert.');
-              this.item = null;
-              this.displayDialog = false;
+                this.messageService.add({key: 'tst-info', severity: 'info', detail: 'Se agregó el Recurso.'});
+                this.loadGrid(); // recarga la grilla
+                console.log('Ok.Component.Insert.');
+                this.item = null;
+                this.displayDialog = false;
           }, (error => {
               console.log('Error.Component.Insert.');
           }));
@@ -101,10 +102,11 @@ export class RecursosComponent implements OnInit {
       this.service.update(item)
       .subscribe(
           item => {
-              this.loadGrid(); // recarga la grilla
-              console.log('Ok.Component.Update');
-              this.item = null;
-              this.displayDialog = false;
+                this.messageService.add({key: 'tst-info', severity: 'info', detail: 'Se actualizó el Recurso.'});
+                this.loadGrid(); // recarga la grilla
+                console.log('Ok.Component.Update');
+                this.item = null;
+                this.displayDialog = false;
           }, (error => {
               console.log('Error.Component.Update.');
           }));

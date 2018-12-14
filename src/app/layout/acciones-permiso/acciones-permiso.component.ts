@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
-
 import { AccionPermiso } from '../../shared/models/accion-permiso';
 import { AccionPermisoService } from '../../shared/services/accion-permiso.service';
-
 import {MessageService} from 'primeng/api';
-
 
 export class PrimeClass implements AccionPermiso {
   constructor(public id?, public name?, public description?) {}
@@ -48,10 +45,10 @@ export class AccionesPermisoComponent implements OnInit {
   }
 
   validation() {
-    if (this.item.id == null || this.item.name == null || this.item.description == null) {
+    if (this.item.name == null || this.item.description == null) {
         return false;
     }
-    if (this.item.id.trim() === '' || this.item.name.trim() === '' || this.item.description.trim() === '') {
+    if (this.item.name.trim() === '' || this.item.description.trim() === '') {
         return false;
     }
     return true;
@@ -85,6 +82,7 @@ export class AccionesPermisoComponent implements OnInit {
       this.service.add(item)
       .subscribe(
           item => {
+              this.messageService.add({key: 'tst-info', severity: 'info', summary: '', detail: 'Se creó la Acción de permiso.'});
               this.loadGrid(); // recarga la grilla
               console.log('Ok.Component.Insert.');
               this.item = null;
@@ -98,10 +96,11 @@ export class AccionesPermisoComponent implements OnInit {
       this.service.update(item)
       .subscribe(
           item => {
-              this.loadGrid(); // recarga la grilla
-              console.log('Ok.Component.Update');
-              this.item = null;
-              this.displayDialog = false;
+                this.messageService.add({key: 'tst-info', severity: 'info', summary: '', detail: 'Se actualizó la Acción de permiso.'});
+                this.loadGrid(); // recarga la grilla
+                console.log('Ok.Component.Update');
+                this.item = null;
+                this.displayDialog = false;
           }, (error => {
               console.log('Error.Component.Update.');
           }));

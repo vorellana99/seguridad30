@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Perfil } from '../models/perfil';
 import { Usuario } from '../models/usuario';
+import { PerfilUsuario } from '../models/perfil-usuario';
 
 const httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -37,10 +38,23 @@ export class PerfilService {
             catchError(this.handleError('Error.Service.Insert.')));
     }
 
+    addUser(perfilUsuario: PerfilUsuario ): Observable<Perfil> {
+        return this.http.post<Perfil>(this.url + '/AddUser', perfilUsuario, httpOptions).pipe(
+            tap((perfil: Perfil) => console.log('Ok.Service.Insert.')), // Respuesta de la API, puede ser un Json
+            catchError(this.handleError('Error.Service.Insert.')));
+    }
+
+
     update(perfil: Perfil): Observable<Perfil> {
         return this.http.put<Perfil>(this.url + '/' + perfil.id, perfil, httpOptions).pipe(
             tap((sistema: Perfil) => console.log('Ok.Service.Update.')), // Respuesta de la API, puede ser un Json
             catchError(this.handleError('Error.Service.Update.')));
+    }
+
+    deleteUser(perfilUsuario: PerfilUsuario): Observable<Perfil> {
+        return this.http.delete<Perfil>(this.url + '/DeleteUser?roleId=' + perfilUsuario.roleId + '&userId=' + perfilUsuario.userId, httpOptions).pipe(
+            tap((item: Perfil) => console.log('Ok.Service.Delete.')),
+            catchError(this.handleError('Error.Service.Delete.')));
     }
 
     private handleError<T> (operation = 'operation', result?: T) {

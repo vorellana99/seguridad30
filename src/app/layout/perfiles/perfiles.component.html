@@ -55,7 +55,7 @@
                             </div>
 
                             <div class="col-md-12 mb-3">
-                                <label>Tipo <b style="color:red">*</b></label>
+                                <label>Sistema <b style="color:red">*</b></label>
                                 <select class="form-control" [(ngModel)]="item.systemAppId">
                                     <option [value]="sistema.id" *ngFor="let sistema of sistemas">{{sistema.name}}</option>
                                 </select>
@@ -69,7 +69,7 @@
     
                         <p-footer>
                             <div class="ui-dialog-buttonpane ui-helper-clearfix">
-                                <button type="button" pButton icon="pi pi-times" (click)="delete()" label="Eliminar" class="ui-button-danger"></button>
+                                <!-- <button type="button" pButton icon="pi pi-times" (click)="delete()" label="Eliminar" class="ui-button-danger"></button> -->
                                 <button type="button" pButton icon="pi pi-check" (click)="save()" label="Guardar" class="ui-button-success"></button>
                             </div>
                         </p-footer>
@@ -114,7 +114,7 @@
             <ng-template pTemplate="body" let-itemx>
                 <tr [pSelectableRow]="itemx">
                     <td style="text-align: center; width: 60px">
-                        <button pButton icon="pi pi-times" class="ui-button-danger" (click)="deleteSelectedItem(itemx)"></button>
+                        <button pButton icon="pi pi-times" class="ui-button-danger" (click)="deleteSelectedUsuario(itemx)"></button>
                     </td>
                     <td style="width: 200px">{{itemx.codigo}}</td>
                     <td style="width: 200px">{{itemx.codigoCorp}}</td>

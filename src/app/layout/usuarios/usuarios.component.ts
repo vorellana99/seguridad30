@@ -68,14 +68,6 @@ export class UsuariosComponent implements OnInit {
         this.displayDialog = true;
     }
 
-
-
-    onRowSelect(event) {
-        //   this.newItem = false;
-        //   this.item = {...event.data};
-        //   this.displayDialog = true;
-    }
-
     save() {
         if (this.newItem) {
             this.add(this.item);
